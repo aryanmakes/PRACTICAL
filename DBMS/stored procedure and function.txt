@@ -1,10 +1,10 @@
 -------------------------stored PROCEDURE 1------------------------------
 mysql> delimiter //
 mysql> CREATE PROCEDURE info_marks(in x int)
-    -> BEGIN
-    -> SELECT RollNo,Name,Subject FROM students WHERE Marks>=x;
-    -> END;
-    -> //
+    BEGIN
+    SELECT RollNo,Name,Subject FROM students WHERE Marks>=x;
+    END;
+    //
 Query OK, 0 rows affected (0.01 sec)
 
 mysql> call info_marks(80);//
@@ -23,12 +23,12 @@ Query OK, 0 rows affected (0.02 sec)
 mysql>
 -- -----------------------------stored PROCEDURE 2---------------------------------------
 mysql> CREATE PROCEDURE open()
-    -> BEGIN
-    -> CREATE TABLE INFO( Eid INT PRIMARY KEY NOT NULL,Ename VARCHAR(50) NOT NULL,Did INT NOT NULL, Working_stage VARCHAR(10));
-    -> INSERT INTO INFO VALUES(1,"shubham",101,"junior"),(2,"Shlok",101,"Senior"),(3,"Pranav",103,"Head");
-    -> SELECT *FROM INFO;
-    -> END;
-    -> //
+    BEGIN
+    CREATE TABLE INFO( Eid INT PRIMARY KEY NOT NULL,Ename VARCHAR(50) NOT NULL,Did INT NOT NULL, Working_stage VARCHAR(10));
+    INSERT INTO INFO VALUES(1,"shubham",101,"junior"),(2,"Shlok",101,"Senior"),(3,"Pranav",103,"Head");
+     SELECT *FROM INFO;
+    END;
+     //
 Query OK, 0 rows affected (0.01 sec)
 
 mysql> CALL open;//
@@ -43,7 +43,7 @@ mysql> CALL open;//
 
 Query OK, 0 rows affected (0.03 sec)
 
-mysql>
+mysql>SET GLOBAL log_bin_trust_function_creators = 1;
 
 ------------------------------------------FUNCTION 1------------------------------
 mysql> select*from students;
@@ -58,17 +58,24 @@ mysql> select*from students;
 +--------+---------+------------+------+---------------------+-------+
 mysql> DELIMITER //
 mysql> CREATE FUNCTION calculate_avg(Rollno INT)
-    -> RETURNS DECIMAL(5,2)
-    -> BEGIN
-    -> DECLARE total_marks DECIMAL(5,2);
-    -> DECLARE num_sub INT;
-    -> DECLARE avg_marks DECIMAL(5,2);
-    -> SELECT SUM(Marks) INTO total_marks FROM students WHERE ROllNo=Rollno;
-    -> SELECT COUNT(Subject) INTO num_sub FROM students WHERE RollNo=Rollno;
-    -> SET avg_marks=total_marks/num_sub;
-    -> RETURN avg_marks;
-    -> END;
-    -> //
+       RETURNS DECIMAL(5,2)
+     BEGIN
+     DECLARE total_marks DECIMAL(5,2);
+     DECLARE num_sub INT;
+    DECLARE avg_marks DECIMAL(5,2);
+    SELECT SUM(Marks) INTO total_marks FROM students WHERE ROllNo=Rollno;
+    SELECT COUNT(Subject) INTO num_sub FROM students WHERE RollNo=Rollno;
+    SET avg_marks=total_marks/num_sub;
+    RETURN avg_marks;
+    END;
+     //
+mysql> select calculate_avg(2) AS total;//
++-------+
+| total |
++-------+
+| 85.00 |
+
+
 
 
 
