@@ -1,0 +1,21 @@
+
+mysql> create table bk_students(
+     action VARCHAR(100) NOT NULL,
+     data VARCHAR(100) NOT NULL
+     );
+     //
+Query OK, 0 rows affected (0.03 sec)
+DELIMITER //
+
+
+DELIMITER //
+
+CREATE TRIGGER row_level_trigger
+AFTER INSERT ON students
+FOR EACH ROW
+BEGIN
+    INSERT INTO student_log (action, data) VALUES ('INSERT', CONCAT('New student inserted: ', NEW.name));
+END;
+//
+
+DELIMITER ;

@@ -1,0 +1,38 @@
+REATE TABLE employees (
+    id INT PRIMARY KEY,
+    name VARCHAR(50),
+    salary DECIMAL(10, 2)
+);
+
+-- Insert some sample data
+INSERT INTO employees (id, name, salary) VALUES (1, 'Alice', 50000.00);
+INSERT INTO employees (id, name, salary) VALUES (2, 'Bob', 60000.00);
+INSERT INTO employees (id, name, salary) VALUES (3, 'Charlie', 70000.00);
+DELIMITER //
+
+CREATE PROCEDURE cursor_demo()
+BEGIN
+    DECLARE emp_id INT;
+    DECLARE emp_name VARCHAR(50);
+    DECLARE emp_salary DECIMAL(10, 2);
+    
+    -- Implicit Cursor Equivalent
+    SELECT id, name, salary INTO emp_id, emp_name, emp_salary FROM employees WHERE id = 1;
+    SELECT CONCAT('Implicit Cursor Result: ID=', emp_id, ', Name=', emp_name, ', Salary=', emp_salary);
+    
+    -- Explicit Cursor Equivalent
+    DECLARE done BOOLEAN DEFAULT FALSE;
+    DECLARE emp_cursor CURSOR FOR SELECT id, name, salary FROM employees WHERE salary > 55000;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+    
+    OPEN emp_cursor;
+    FETCH emp_cursor INTO emp_id, emp_name, emp_salary;
+    WHILE NOT done DO
+        SELECT CONCAT('Explicit Cursor Result: ID=', emp_id, ', Name=', emp_name, ', Salary=', emp_salary);
+        FETCH emp_cursor INTO emp_id, emp_name, emp_salary;
+    END WHILE;
+    CLOSE emp_cursor;
+END;
+//
+
+DELIMITER ;
