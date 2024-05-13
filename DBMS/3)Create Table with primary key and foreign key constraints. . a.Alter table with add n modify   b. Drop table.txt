@@ -1,0 +1,21 @@
+CREATE TABLE Students (
+    StudentID INT PRIMARY KEY NOT NULL,
+    Student_Name VARCHAR(100) NOT NULL,
+    Address VARCHAR(200)
+);
+ create table Courses(
+     courseID INT PRIMARY KEY NOT NULL,
+    course_name VARCHAR(100) NOT NULL,
+    studentID INT,
+    teacher VARCHAR(100));
+);
+
+
+ALTER TABLE Courses
+ADD CONSTRAINT fk_Enrollment_Student FOREIGN KEY (studentID) REFERENCES Students(studentID);
+
+
+
+SELECT Students.studentID, Students.Address, Courses.course_name
+FROM Courses
+JOIN Students ON Courses.studentID = Students.studentID;
